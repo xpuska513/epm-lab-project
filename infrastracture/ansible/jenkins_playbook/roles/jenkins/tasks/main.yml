@@ -1,0 +1,35 @@
+- name: remove old java
+  yum: name=java-1.7.0-openjdk-1.7.0.181-2.6.14.8.80.amzn1.x86_64 state=absent
+  
+- name: Install Java
+  yum: name=java-1.8.0-openjdk-devel update_cache=yes
+
+- name: Install git
+  yum: name=git
+
+- name: Donwload rpo keys
+  shell: curl --silent --location http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo | sudo tee /etc/yum.repos.d/jenkins.repo
+
+- name: Add repo
+  shell: rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key
+
+- name: install jenkins
+  yum: name=jenkins update_cache=yes
+
+- name: install jenkins
+  service: name=jenkins state=started
+
+- name: Install nginx
+  yum: name=nginx
+
+- name: Get jenkins password
+  shell: sleep 40s; cat /var/lib/jenkins/secrets/initialAdminPassword
+  register: jenkins_start_password
+
+- name: get instance public ip
+  shell: sleep 40s; curl http://169.254.169.254/latest/meta-data/public-ipv4
+  register: inst_ip
+
+- name: Copy template with ip to /usr/share/nginx/html
+  template: src=node_info.html dest=/usr/share/nginx/html/node_info.html
+  notify: start_nginx

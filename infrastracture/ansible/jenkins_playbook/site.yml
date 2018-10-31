@@ -1,0 +1,19 @@
+- name: Install jenkins
+  user: ec2-user
+  become: yes
+  become_user: root
+  become_method: sudo
+  hosts: tag_Ansible_Jenkins
+
+  roles:
+    - jenkins
+
+- name: Install Java on Nodes
+  user: ec2-user
+  become: yes
+  become_user: root
+  become_method: sudo
+  hosts: tag_Ansible_Nodes
+
+  roles:
+    - java_node

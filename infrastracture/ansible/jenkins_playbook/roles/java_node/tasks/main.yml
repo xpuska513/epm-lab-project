@@ -1,0 +1,12 @@
+- name: Remove old java
+  yum: name=java-1.7.0-openjdk-1.7.0.181-2.6.14.8.80.amzn1.x86_64 state=absent
+- name: install openjdk
+  yum: name=java-1.8.0-openjdk-devel update_cache=yes
+- name: Install nginx
+  yum: name=nginx
+- name: Gather server ip
+  shell: curl http://169.254.169.254/latest/meta-data/public-ipv4
+  register: node_ip
+- name: Copy template with ip to /usr/share/nginx/html
+  template: src=node_info.html dest=/usr/share/nginx/html/node_info.html
+  notify: start_nginx
