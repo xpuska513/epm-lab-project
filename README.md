@@ -1,4 +1,4 @@
-# How to launch this excriments pile?
-* Download job.tgz archive and save it to other directory
+# How to launch
+* Download job.tgz archive and save it to other dirrectory
 * Download key from amazon and copy it to infrastructure folder
 * Launch script
